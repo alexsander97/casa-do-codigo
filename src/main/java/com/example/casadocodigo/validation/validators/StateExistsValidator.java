@@ -6,13 +6,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 @Component
-public class CountryWithoutStateValidator implements Validator {
+public class StateExistsValidator implements Validator {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -28,13 +26,14 @@ public class CountryWithoutStateValidator implements Validator {
             return;
         }
         NewClientRequest request = (NewClientRequest) target;
-        Query query = entityManager.createQuery("select distinct c.id from State s " +
-                "inner join Country c ON s.country.id = :id");
-        query.setParameter("id", request.getIdCountry());
 
-        if(query.getResultList().size() > 0 && request.getIdState() == null) {
-            errors.rejectValue("idState", null,
-                    "Um estado precisa ser cadastrado porque este país tem estados.");
+//        verifica se o estado passado quando o país tem estados existe.
+        if ( request.getIdState() != null) {
+            State state = entityManager.find(State.class, request.getIdState());
+            if(state == null) {
+                errors.rejectValue("idState", null,
+                        "Este estado não está cadastrado.");
+            }
         }
     }
 }

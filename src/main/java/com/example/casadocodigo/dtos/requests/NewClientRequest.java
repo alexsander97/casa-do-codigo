@@ -60,7 +60,7 @@ public class NewClientRequest {
                 this.address, this.complement, this.city, this.postalCode, country, phoneNumber);
 
         if (idState != null) {
-            state = entityManager.find(State.class, "id");
+            state = entityManager.find(State.class, idState);
             client.setState(state);
         }
 

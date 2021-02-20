@@ -4,6 +4,7 @@ import com.example.casadocodigo.dtos.requests.NewClientRequest;
 import com.example.casadocodigo.dtos.responses.ClientResponseDto;
 import com.example.casadocodigo.entities.Client;
 import com.example.casadocodigo.validation.validators.CountryWithoutStateValidator;
+import com.example.casadocodigo.validation.validators.StateExistsValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,9 +25,13 @@ public class ClientController {
     @Autowired
     private CountryWithoutStateValidator countryWithoutStateValidator;
 
+    @Autowired
+    private StateExistsValidator stateExistsValidator;
+
     @InitBinder
     public void init(WebDataBinder binder) {
-        binder.addValidators(countryWithoutStateValidator);
+        binder.addValidators(countryWithoutStateValidator,
+                stateExistsValidator);
     }
 
 

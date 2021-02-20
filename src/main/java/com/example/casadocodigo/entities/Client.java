@@ -43,6 +43,7 @@ public class Client {
     @JoinColumn(name = "COUNTRY_ID", nullable = false)
     private Country country;
 
+    @Column(name = "PHONE_NUMBER", nullable = false)
     private String phoneNumber;
 
     @Deprecated
